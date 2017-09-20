@@ -45,6 +45,15 @@ def send_boot_report(job, git_branch, kernel, lab_name, email_opts):
     utils.LOG.info("Preparing boot report email for '{}'".format(report_id))
     status = "ERROR"
 
+    # |<---8<---- DEBUG ---------
+    utils.LOG.info("recipients")
+    for r in ['to', 'cc', 'bcc']:
+        utils.LOG.info("  {:4s}: {}".format(r, email_opts[r]))
+    if False:
+        utils.LOG.info("Not sending any email...")
+        return None
+    # -----8<------------------>|
+
     db_options = taskc.app.conf.get("db_options", {})
 
     txt_body, html_body, new_subject, headers = \

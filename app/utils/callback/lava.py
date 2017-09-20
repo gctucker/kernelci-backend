@@ -270,6 +270,14 @@ def _add_test_log(meta, job_log, suite):
     :param suite: Test suite name
     :type suite: string
     """
+    if False:
+        import json
+        utils.LOG.info("deBug creating debug files in /tmp/")
+        with open('/tmp/debug-log.yaml', 'w') as f:
+            f.write(job_log)
+        with open('/tmp/debug-meta.json', 'w') as f:
+            json.dump(meta, f)
+
     log = yaml.load(job_log, Loader=yaml.CLoader)
 
     dir_path = meta[models.DIRECTORY_PATH]

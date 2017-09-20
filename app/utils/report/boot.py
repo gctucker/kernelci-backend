@@ -219,6 +219,21 @@ def parse_regressions(lab_regressions, boot_data, db_options):
                             for compiler, boots in build_env_d.iteritems():
                                 regr_board = regr_build_env.setdefault(
                                     board, [])
+                                # |<---8<---- DEBUG ---------
+                                print("------------------------------")
+                                debug = {
+                                    'lab': lab,
+                                    'arch': arch,
+                                    'defconfig': defconfig,
+                                    'board': board,
+                                    'compiler': compiler,
+                                }
+                                for k, v in debug.iteritems():
+                                    print("  {:16s} {}".format(k, v))
+                                for b in boots:
+                                    print("boot: {}".format(b['kernel']))
+                                print("------------------------------")
+                                # -----8<------------------>|
                                 good, bad = boots[0], boots[-1]
                                 bisect = bbisect.create_boot_bisect(
                                     good, bad, db_options)
@@ -508,6 +523,9 @@ def _start_bisection(bisection, jopts):
         params["KERNEL_TREE"], params["KERNEL_BRANCH"],
         params["TARGET"], params["LAB"]))
     server = jenkins.Jenkins(jopts["url"], jopts["user"], jopts["token"])
+    if False:
+        utils.LOG.info("--- not starting that now ---")
+        return
     server.build_job(jopts["bisect"], params)
 
 
@@ -515,6 +533,10 @@ def trigger_bisections(status, job, branch, kernel, lab_name,
                        db_options, jenkins_options):
     if not jenkins_options:
         return 'SKIP'
+
+    if False:
+        print("Not triggering...")
+        return "SKIP"
 
     boot_data = get_boot_data(db_options, job, branch, kernel, lab_name)
     bisections = boot_data.get("bisections")
