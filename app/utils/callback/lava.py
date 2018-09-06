@@ -557,6 +557,10 @@ def add_tests(job_data, lab_name, db_options, base_path=utils.BASE_PATH):
     utils.LOG.info("Processing LAVA test data: job {} from {}".format(
         job_data["id"], lab_name))
 
+    if False:
+        with open("/tmp/test-data.json", "w") as f:
+            json.dump(job_data, f)
+
     meta = {
         models.VERSION_KEY: "1.1",
         models.LAB_NAME_KEY: lab_name,
