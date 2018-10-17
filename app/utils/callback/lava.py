@@ -17,6 +17,7 @@ import models
 import os
 import yaml
 import json
+import urllib
 
 import utils
 import utils.boot
@@ -457,6 +458,32 @@ def _add_test_results(group, suite_results, suite_name):
     })
 
 
+def _add_test_info(group):
+    """Get rootfs info
+
+    Download the the json with the information of the rootfs and add it
+    to the test_group document.
+
+    :param group: Test group data.
+    :type group: dict
+    """
+
+    rootfs_url = group["initrd"]
+    file_path = os.path.join(os.path.dirname(rootfs_url), "build_info.json")
+
+    try:
+
+        urllib.urlretrieve (file_path, "build_info.json")
+
+        with open("build_info.json", 'r') as stream:
+            data_loaded = yaml.load(stream, Loader=yaml.CLoader)
+
+        group.update({
+            models.INITRD_INFO_KEY: data_loaded
+        })
+    except:
+        pass
+
 def add_tests(job_data, lab_name, db_options, base_path=utils.BASE_PATH):
     """Entry point to be used as an external task.
 
@@ -505,6 +532,7 @@ def add_tests(job_data, lab_name, db_options, base_path=utils.BASE_PATH):
             _get_lava_meta(group, job_data)
             _add_boot_log(group, job_data["log"], base_path, suite_name)
             _add_test_results(group, suite_results, suite_name)
+            _add_test_info(group)
             ret_code, group_doc_id, err = \
                 utils.kci_test.import_and_save_kci_tests(group, db_options)
             utils.errors.update_errors(errors, err)
