@@ -78,18 +78,26 @@ pre {
     </table>
     {% if t.test_cases -%}
     <p>Test cases ({{ t.total_tests}}): </td><td><strong>{{ t.total["PASS"] }}</strong> PASS, <strong>{{ t.total["FAIL"] }}</strong> FAIL, <strong>{{ t.total["SKIP"] }}</strong> SKIP</p>
+    {% endif %}
+    {% if t.test_cases and t.total["FAIL"] != 0 %}
+    <strong>This test has failed cases</strong>
     <table>
       {% for tc in t.test_cases -%}
-      <tr><td>{{ tc.name }}</td><td>{{ tc.status }}</td></tr>
+      {%- if 'FAIL' == tc.status %}
+      <tr><td>{{ tc.name }}</td><td><strong>{{ tc.status }}</strong></td></tr>
+      {%- endif %}
       {%- endfor %}
     </table>
     {% endif -%}
     {% if t.sub_groups -%}
+    Test subgroups:
     {% for sg in t.sub_groups -%}
     <p>{{ sg.name }} ({{ sg.total_tests }}): </td><td><strong>{{ sg.total["PASS"] }}</strong> PASS, <strong>{{ sg.total["FAIL"] }}</strong> FAIL, <strong>{{ sg.total["SKIP"] }}</strong> SKIP</p>
     <table>
       {% for tc in sg.test_cases -%}
-      <tr><td>{{ tc.name }}</td><td>{{ tc.status }}</tr>
+      {%- if 'FAIL' == tc.status %}
+      <tr><td>{{ tc.name }}</td><td><strong>{{ tc.status }}</strong></tr>
+      {%- endif %}
       {%- endfor %}
     </table>
     {%- endfor %}
