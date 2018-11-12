@@ -31,19 +31,24 @@ Tests
   Test Git:    {{ e.git_url }}
   Test Commit: {{ e.git_commit }}
 {% endfor %}
-{% if t.test_cases %}
-  Test cases:
+{% if t.test_cases and t.total["FAIL"] != 0 %}
+  This test has failed cases:
 {% for tc in t.test_cases %}
+  {%- if 'FAIL' == tc.status %}
     * {{ tc.name }}: {{ tc.status }}
+  {%- endif %}
 {%- endfor %}
 {%- endif %}
-{% if t.sub_groups %}
+{%- if t.sub_groups %}
+  Test subgroups:
 {%- for sg in t.sub_groups %}
-  {{ sg.name }} - {{ sg.total_tests }} tests: {{ sg.total["PASS"] }}  PASS, {{ sg.total["FAIL"] }} FAIL, {{ sg.total["SKIP"] }} SKIP
-{% for tc in sg.test_cases %}
-    * {{ tc.name }}: {{ tc.status }}
+    {{ sg.name }} - {{ sg.total_tests }} tests: {{ sg.total["PASS"] }}  PASS, {{ sg.total["FAIL"] }} FAIL, {{ sg.total["SKIP"] }} SKIP
+{%- for tc in sg.test_cases %}
+  {%- if 'FAIL' == tc.status %}
+      * {{ tc.name }}: {{ tc.status }}
+  {%- endif %}
 {%- endfor %}
-{% endfor %}
+{%- endfor %}
 {%- endif %}
 
 {% endfor %}
