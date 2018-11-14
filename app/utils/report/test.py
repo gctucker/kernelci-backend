@@ -139,6 +139,7 @@ def create_test_report(data, email_format, db_options,
     """
     database = utils.db.get_db_connection(db_options)
 
+    print("create_test_report")
     job, branch, kernel, plan = (data[k] for k in [
         models.JOB_KEY,
         models.GIT_BRANCH_KEY,
@@ -153,6 +154,10 @@ def create_test_report(data, email_format, db_options,
         models.PARENT_ID_KEY: None,
     })
 
+    print("spec:")
+    for k, v in spec.iteritems():
+        print("* {:16} {}".format(k, v))
+
     groups = list(utils.db.find(
         database[models.TEST_GROUP_COLLECTION],
         spec=group_spec,
@@ -161,6 +166,17 @@ def create_test_report(data, email_format, db_options,
     if not groups:
         utils.LOG.warning("Failed to find test group documents")
         return None
+
+    # |<-- debug ---
+    debug_fields = ["name", "defconfig_full", "device_type"]
+    fmt = " ".join("{:33}" for i in range(len(debug_fields)))
+    sep = "-" * 33 * len(debug_fields)
+    print("group docs:")
+    print(sep)
+    for g in groups:
+        print(fmt.format(*tuple(g[f] for f in debug_fields)))
+    print(sep)
+    #  --- debug -->|
 
     for group in groups:
         _add_test_group_data(group, database, spec)
