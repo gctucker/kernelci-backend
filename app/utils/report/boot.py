@@ -543,8 +543,28 @@ def trigger_bisections(status, job, branch, kernel, lab_name,
     if not bisections:
         return 'OK'
 
+    def dump_bisections(bisections):
+        fields = [
+            models.TYPE_KEY,
+            models.ARCHITECTURE_KEY,
+            models.DEFCONFIG_FULL_KEY,
+            models.JOB_KEY,
+            models.KERNEL_KEY,
+            models.GIT_BRANCH_KEY,
+            models.LAB_NAME_KEY,
+            models.DEVICE_TYPE_KEY,
+            models.BISECT_GOOD_COMMIT_KEY,
+            models.BISECT_BAD_COMMIT_KEY,
+        ]
+        for b in bisections:
+            for f in fields:
+                print("* {:16} {}".format(f, b[f]))
+            print("---")
+
     # We need to make some changes in-place but not modify incoming data
     bisections = copy.copy(bisections)
+    print("=== initial bisections ===")
+    dump_bisections(bisections)
 
     # ToDo: remove unwanted bisections (duplicates, ones already run...)
     # ...
@@ -553,6 +573,8 @@ def trigger_bisections(status, job, branch, kernel, lab_name,
     # the same board at the same time and also to avoid any kind of dependency
     # on the order in which they are being generated.
     random.shuffle(bisections)
+    print("=== randomized ===")
+    dump_bisections(bisections)
 
     # Now trigger all the bisections
     for b in bisections:
