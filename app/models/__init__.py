@@ -12,7 +12,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # The default mongodb database name.
-DB_NAME = "kernel-ci"
+DB_NAME = "kernel-ci-staging"
 
 DEFAULT_SCHEMA_VERSION = "1.0"
 
