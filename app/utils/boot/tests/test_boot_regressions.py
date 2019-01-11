@@ -37,7 +37,7 @@ class TestBootRegressions(unittest.TestCase):
             "arch": "arm",
             "defconfig_full": "defconfig-full",
             "defconfig": "defconfig",
-            "compiler_version_ext": "gcc 5.1.1",
+            "compiler_version_full": "gcc 5.1.1",
             "lab_name": "boot-lab",
             "board": "arm-board",
             "created_on": "2016-06-29"
