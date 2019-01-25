@@ -194,6 +194,7 @@ def track_regression(boot_doc, pass_doc, old_regr, db_options):
     arch = b_get(models.ARCHITECTURE_KEY)
     b_instance = sanitize_key(str(b_get(models.BOARD_INSTANCE_KEY)).lower())
     board = sanitize_key(b_get(models.BOARD_KEY))
+    build_env = b_get(models.BUILD_ENVIRONMENT_KEY)
     compiler = sanitize_key(str(b_get(models.COMPILER_VERSION_EXT_KEY)))
     defconfig = sanitize_key(b_get(models.DEFCONFIG_FULL_KEY))
     job = b_get(models.JOB_KEY)
@@ -270,7 +271,9 @@ def track_regression(boot_doc, pass_doc, old_regr, db_options):
                         board: {
                             b_instance: {
                                 defconfig: {
-                                    compiler: regr_docs
+                                    build_env: {
+                                        compiler: regr_docs
+                                    }
                                 }
                             }
                         }
