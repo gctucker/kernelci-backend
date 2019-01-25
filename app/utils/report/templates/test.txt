@@ -21,6 +21,8 @@ Test failures
   {%- if t.total["FAIL"] or t.regressions %} {# fail or regressions #}
 {{ "%-2s | %-10s | %-22s | %-5s | %3s total: %3s PASS %3s FAIL %3s SKIP"|format(loop.index, t.name, t.board, t.arch, t.total_tests, t.total["PASS"], t.total["FAIL"], t.total["SKIP"]) }}
 
+build env: {{ t.build_environment }}
+
   Config:      {{ t.defconfig_full }}
   Compiler:    {{ t.build_environment }}{% if t.compiler_version_full %} ({{ t.compiler_version_full }}){% endif %}
   Lab Name:    {{ t.lab_name }}

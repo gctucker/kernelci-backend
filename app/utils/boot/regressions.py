@@ -400,6 +400,8 @@ def find(boot_id, db_options):
                 {models.BOOT_ID_KEY: boot_id},
                 db_options=db_options)
 
+            print("regressions: {}".format(regressions_id))
+
             if regressions_id:
                 utils.LOG.info("Boot regressions already tracked")
             else:

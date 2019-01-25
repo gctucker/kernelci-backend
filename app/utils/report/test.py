@@ -168,9 +168,10 @@ def create_test_report(data, email_format, db_options,
         return None
 
     # |<-- debug ---
-    debug_fields = ["name", "defconfig_full", "device_type"]
-    fmt = " ".join("{:33}" for i in range(len(debug_fields)))
-    sep = "-" * 33 * len(debug_fields)
+    debug_fields = [
+        "name", "defconfig_full", "build_environment", "device_type"]
+    fmt = " ".join("{:24}" for i in range(len(debug_fields)))
+    sep = "-" * 24 * len(debug_fields)
     print("group docs:")
     print(sep)
     for g in groups:

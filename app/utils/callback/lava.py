@@ -590,6 +590,8 @@ def add_tests(job_data, lab_name, db_options, base_path=utils.BASE_PATH):
             ret_code, group_doc_id, err = \
                 utils.kci_test.import_and_save_kci_tests(group, db_options)
             utils.errors.update_errors(errors, err)
+            print("imported group id: {}".format(group_doc_id))
+            print("build_env: {}".format(meta[models.BUILD_ENVIRONMENT_KEY]))
             group_doc_ids.append(group_doc_id)
     except (yaml.YAMLError, ValueError) as ex:
         ret_code = 400

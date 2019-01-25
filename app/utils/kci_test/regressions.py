@@ -165,7 +165,12 @@ def find(group_id, db_options={}, db=None):
         utils.LOG.warn("Test group not found: {}".format(group_id))
         return (500, None)
 
+    print("group id: {}, build_env: {}".format(
+        group["_id"], group[models.BUILD_ENVIRONMENT_KEY]))
     spec = {k: group[k] for k in TEST_GROUP_SPEC_KEYS}
+    print("spec:")
+    for k, v in spec.iteritems():
+        print("* {:16} {}".format(k, v))
     last_spec = {k: v for k, v in spec.iteritems() if k != models.KERNEL_KEY}
     last_spec[models.CREATED_KEY] = {"$lt": group[models.CREATED_KEY]}
     last = collection.find_one(last_spec, sort=[(models.CREATED_KEY, -1)])
